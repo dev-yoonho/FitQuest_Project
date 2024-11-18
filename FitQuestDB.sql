@@ -11,7 +11,10 @@ CREATE TABLE User (
     email VARCHAR(100) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
     nickname VARCHAR(50) NOT NULL,
-    is_admin BOOLEAN DEFAULT FALSE
+    is_admin BOOLEAN DEFAULT FALSE,
+    height FLOAT NOT NULL,
+    weight FLOAT NOT NULL,
+    age INT NOT NULL
 );
 
 CREATE TABLE Exercise (

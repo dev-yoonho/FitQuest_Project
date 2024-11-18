@@ -85,7 +85,9 @@
 - **전화번호 (phone\_number)**: VARCHAR(20)
 - **닉네임 (nickname)**: VARCHAR(50), NOT NULL
 - **관리자 여부 (is\_admin)**: BOOLEAN, DEFAULT FALSE
-- **일러스트레이션 ID (illustration\_id)**: INT, FOREIGN KEY REFERENCES Illustration(illustration\_id)
+- **키**: FLOAT, NOT NULL
+- **체중**: FLOAT, NOT NULL
+- **나이**: FLOAT, NOT NULL
 
 ### 2. 운동 (Exercise)
 
