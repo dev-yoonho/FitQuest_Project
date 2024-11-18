@@ -11,7 +11,10 @@ CREATE TABLE User (
     email VARCHAR(100) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
     nickname VARCHAR(50) NOT NULL,
-    is_admin BOOLEAN DEFAULT FALSE
+    is_admin BOOLEAN DEFAULT FALSE,
+    height FLOAT NOT NULL,
+    weight FLOAT NOT NULL,
+    age INT NOT NULL
 );
 
 CREATE TABLE Exercise (
@@ -50,6 +53,12 @@ CREATE TABLE CharacterInfo (
     toughness INT DEFAULT 0,
     stamina INT DEFAULT 0,
     luck INT DEFAULT 0,
+    patk INT DEFAULT 0,
+    def INT DEFAULT 0,
+    cridam INT DEFAULT 0,
+    matk INT DEFAULT 0,
+    mres INT DEFAULT 0,
+    hprecov INT DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
@@ -104,10 +113,31 @@ CREATE TABLE Party (
 );
 
 CREATE TABLE PartyMember (
+    user_id INT PRIMARY KEY,
     party_id INT,
-    user_id INT UNIQUE,
     joined_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (party_id, user_id),
     FOREIGN KEY (party_id) REFERENCES Party(party_id),
     FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+CREATE TABLE Monster (
+	monster_name VARCHAR(50) PRIMARY KEY,
+    monster_desc TEXT NOT NULL,
+    img_path VARCHAR(255) NOT NULL,
+    stamina INT DEFAULT 0,
+    patk INT DEFAULT 0,
+    def INT DEFAULT 0,
+    matk INT DEFAULT 0,
+    mres INT DEFAULT 0,
+    hprecov INT DEFAULT 0
+);
+
+CREATE TABLE MonsterRaid (
+	raid_id INT AUTO_INCREMENT PRIMARY KEY,
+    party_id INT,
+    monster_name VARCHAR(50),
+    stamina INT DEFAULT 0,
+    raided_at DATETIME DEFAULT NULL,
+    FOREIGN KEY (party_id) REFERENCES Party(party_id),
+    FOREIGN KEY (monster_name) REFERENCES Monster(monster_name)
 );
