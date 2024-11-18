@@ -199,3 +199,4 @@
 - **잔여 체력 (stamina)**: INT, DEFAULT 0
 - **레이드 완료 일자 (raided_at)**: DATETIME DEFAULT NULL
 
+
