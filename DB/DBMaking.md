@@ -59,8 +59,18 @@
 ### 8. 파티(길드)
 
 - **파티 등록/수정/조회/삭제 기능**: 사용자는 파티를 생성하고 다른 사용자와 함께 파티를 구성할 수 있습니다.
-- **파티의 형태**: 보스 레이드를 제외한 **크루 형태**로 유지되며, 파티 멤버 간의 커뮤니티 활동을 지원합니다.
-- **파티 멤버 관리**: 각 사용자는 여러 파티에 참여할 수 있으며, 파티 멤버 간의 활동을 기록하고 조회할 수 있습니다.
+- **파티의 형태**: 파티 멤버 간의 커뮤니티 활동과 몬스터 레이드를 지원합니다.
+- **파티 멤버 관리**: 각 사용자는 하나의 파티에만 참여할 수 있으며, 파티 멤버 간의 활동을 기록하고 조회할 수 있습니다.
+
+### 9. 몬스터 레이드
+- **레이드 참가 조건**: 파티에 참여하고 있는 사용자만 레이드가 가능합니다.
+- **레이드 진행 방식**: 한 번의 레이드에는 하나의 파티만 참여할 수 있으며, 파티원들이 협력하여 몬스터를 처치합니다.
+- **몬스터 정보**: 각 레이드에는 몬스터의 정보(체력, 공격력, 방어력 등)가 제공되며, 몬스터의 체력이 0이 되면 레이드가 완료됩니다.
+- **레이드 단계**: 몬스터의 난이도는 여러 단계로 구성되어 있으며, 이전 단계의 몬스터를 처치해야 다음 단계로 진행할 수 있습니다.
+- **레이드 보상**: 레이드를 완료하면 참여한 파티원들에게 보상이 지급되며, 보상은 캐릭터의 스탯 증가 또는 커스터마이징 아이템으로 구성될 수 있습니다.
+- **레이드 기록 관리**: 레이드가 완료되면 레이드 기록이 저장되며, 파티별로 레이드 진행 상황을 확인할 수 있습니다.
+- **잔여 체력 관리**: 레이드 진행 중 몬스터의 잔여 체력을 실시간으로 관리하며, 레이드 테이블에 업데이트됩니다.
+
 
 ## 테이블 목록
 
@@ -112,6 +122,12 @@
 - **정신력 (toughness)**: INT, DEFAULT 0
 - **체력 (stamina)**: INT, DEFAULT 0
 - **운 (luck)**: INT, DEFAULT 0
+- **물리 공격력 (patk)**: INT, DEFAULT 0
+- **방어력 (def)**: INT, DEFAULT 0
+- **치명타 피해 (cridam)**: INT, DEFAULT 0
+- **마법 공격력 (matk)**: INT, DEFAULT 0
+- **마법 저항력 (mres)**: INT, DEFAULT 0
+- **체력 회복 속도 (hprecov)**: INT, DEFAULT 0
 
 ### 5. 캐릭터 커스터마이제이션 (CharacterCustomization)
 
@@ -159,8 +175,27 @@
 
 ### 11. 파티 멤버 (PartyMember)
 
+- **사용자 ID (user\_id)**: PRIMARY KEY, FOREIGN KEY REFERENCES User(user\_id)
 - **파티 ID (party\_id)**: FOREIGN KEY REFERENCES Party(party\_id)
-- **사용자 ID (user\_id)**: FOREIGN KEY REFERENCES User(user\_id)
 - **참여 일자 (joined\_at)**: DATETIME DEFAULT CURRENT\_TIMESTAMP
-- **PRIMARY KEY (party\_id, user\_id)**
+
+### 12. 몬스터 (Monster)
+
+- **몬스터 이름 (monster_name)**: PRIMARY KEY, VARCHAR(50)
+- **몬스터 설명 (monster_desc)**: TEXT NOT NULL
+- **몬스터 이미지 경로(img_path)**: VARCHAR(255), NOT NULL
+- **체력 (stamina)**: INT, DEFAULT 0
+- **물리 공격력 (patk)**: INT, DEFAULT 0
+- **방어력 (def)**: INT, DEFAULT 0
+- **마법 공격력 (matk)**: INT, DEFAULT 0
+- **마법 저항력 (mres)**: INT, DEFAULT 0
+- **체력 회복 속도 (hprecov)**: INT, DEFAULT 0
+
+### 13. 몬스터 레이드 (MonsterRaid)
+
+- **레이드 ID (raid_id)**: PRIMARY KEY, INT, AUTO_INCREMENT
+- **파티 ID (party_id)**: FOREIGN KEY REFERENCES Party(party_id)
+- **몬스터 이름 (monster_name)**: FOREIGN KEY REFERENCES Monster(monster_name)
+- **잔여 체력 (stamina)**: INT, DEFAULT 0
+- **레이드 완료 일자 (raided_at)**: DATETIME DEFAULT NULL
 
