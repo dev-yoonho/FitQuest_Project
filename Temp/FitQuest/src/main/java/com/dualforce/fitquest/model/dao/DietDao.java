@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DietDao {
     // 식단 기록 생성
-    void insertDiet(DietDto diet);
+    int insertDiet(DietDto diet);
 
     // 식단 기록 조회(식단 ID)
     DietDto selectDietById(int dietId);
@@ -24,10 +24,10 @@ public interface DietDao {
     List<DietDto> selectAllDiet();
 
     // 식단 기록 수정
-    void updateDiet(DietDto diet);
+    int updateDiet(DietDto diet);
 
     // 식단 기록 삭제
-    void deleteDiet(int dietId);
+    int deleteDiet(int dietId);
 
     // 기능에 따른 추가 필요
 }

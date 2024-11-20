@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDao {
     // 사용자 생성
-    void insertUser(UserDto user);
+    int insertUser(UserDto user);
 
     // 사용자 조회(id)
     UserDto selectUserById(int id);
@@ -18,10 +18,10 @@ public interface UserDao {
     List<UserDto> selectAllUsers();
 
     // 사용자 수정
-    void updateUser(UserDto user);
+    int updateUser(UserDto user);
     
     // 사용자 삭제
-    void deleteUser(int id);
+    int deleteUser(int id);
 
     // 기능에 따른 추가 필요
 }

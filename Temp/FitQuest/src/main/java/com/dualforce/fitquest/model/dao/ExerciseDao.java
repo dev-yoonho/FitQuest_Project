@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ExerciseDao {
     // 운동 기록 생성
-    void insertExercise(ExerciseDto exercise);
+    int insertExercise(ExerciseDto exercise);
 
     // 운동 기록 조회(사용자 ID)
     List<ExerciseDto> selectExercisesByUserId(int userId);
@@ -24,10 +24,10 @@ public interface ExerciseDao {
     List<ExerciseDto> selectAllExercises();
 
     // 운동 기록 수정
-    void updateExercise(ExerciseDto exercise);
+    int updateExercise(ExerciseDto exercise);
 
     // 운동 기록 삭제(운동 ID)
-    void deleteExercise(int exerciseId);
+    int deleteExercise(int exerciseId);
 
     // 기능에 따른 추가 필요
 }

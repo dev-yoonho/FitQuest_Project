@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CharacterInfoDao {
     // 캐릭터 생성
-    void insertCharacterInfo(CharacterInfoDto characterInfo);
+    int insertCharacterInfo(CharacterInfoDto characterInfo);
 
     // 캐릭터 조회(사용자 ID)
     CharacterInfoDto selectCharacterInfoByUserId(int userId);
@@ -15,10 +15,10 @@ public interface CharacterInfoDao {
     List<CharacterInfoDto> selectAllCharacterInfo();
 
     // 캐릭터 스탯 수정
-    void updateCharacterInfo(CharacterInfoDto characterInfo);
+    int updateCharacterInfo(CharacterInfoDto characterInfo);
     
     // 캐릭터 삭제
-    void deleteCharacterInfo(int userId);
+    int deleteCharacterInfo(int userId);
 
     // 기능 추가 필요
 }
