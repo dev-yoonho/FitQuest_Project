@@ -208,7 +208,7 @@
 - **스토리 ID (story_id)**: PRIMARY KEY, INT, AUTO_INCREMENT
 - **레이드 ID (raid_id)**: FOREIGN KEY REFERENCES MonsterRaid(raid\_id)
 - **유저 ID (user_id)**: FOREIGN KEY REFERENCES User(user\_id)
-- **전투 설명 (battile_desc)**: TEXT NOT NULL
+- **전투 설명 (battle_desc)**: TEXT NOT NULL
 - **스토리 순서 (sequence_order)**: INT NOT NULL
 - **스토리 등록 일자 (created_at)**: DATETIME DEFAULT CURRENT\_TIMESTAMP
 
