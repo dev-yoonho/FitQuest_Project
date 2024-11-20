@@ -70,6 +70,9 @@
 - **레이드 보상**: 레이드를 완료하면 참여한 파티원들에게 보상이 지급되며, 보상은 캐릭터의 스탯 증가 또는 커스터마이징 아이템으로 구성될 수 있습니다.
 - **레이드 기록 관리**: 레이드가 완료되면 레이드 기록이 저장되며, 파티별로 레이드 진행 상황을 확인할 수 있습니다.
 - **잔여 체력 관리**: 레이드 진행 중 몬스터의 잔여 체력을 실시간으로 관리하며, 레이드 테이블에 업데이트됩니다.
+- **전투 상황 기록**: 레이드 진행 중 각 전투 상황을 스토리 형태로 기록하여 추후 파티 멤버가 전투 내용을 다시 확인할 수 있습니다.
+
+- **스토리 다시보기 기능**: 레이드가 종료된 이후, 파티 멤버는 전투 상황을 다시 확인할 수 있도록 스토리를 조회할 수 있습니다.
 
 
 ## 테이블 목록
@@ -195,10 +198,18 @@
 
 ### 13. 몬스터 레이드 (MonsterRaid)
 
-- **레이드 ID (raid_id)**: PRIMARY KEY, INT, AUTO_INCREMENT
-- **파티 ID (party_id)**: FOREIGN KEY REFERENCES Party(party_id)
-- **몬스터 이름 (monster_name)**: FOREIGN KEY REFERENCES Monster(monster_name)
+- **레이드 ID (raid_id)**: PRIMARY KEY, INT, AUTO\_INCREMENT
+- **파티 ID (party_id)**: FOREIGN KEY REFERENCES Party(party\_id)
+- **몬스터 이름 (monster_name)**: FOREIGN KEY REFERENCES Monster(monster\_name)
 - **잔여 체력 (stamina)**: INT, DEFAULT 0
 - **레이드 완료 일자 (raided_at)**: DATETIME DEFAULT NULL
+
+### 14. 몬스터 레이드 스토리 (MonsterRaidStory)
+- **스토리 ID (story_id)**: PRIMARY KEY, INT, AUTO_INCREMENT
+- **레이드 ID (raid_id)**: FOREIGN KEY REFERENCES MonsterRaid(raid\_id)
+- **유저 ID (user_id)**: FOREIGN KEY REFERENCES User(user\_id)
+- **전투 설명 (battile_desc)**: TEXT NOT NULL
+- **스토리 순서 (sequence_order)**: INT NOT NULL
+- **스토리 등록 일자 (created_at)**: DATETIME DEFAULT CURRENT\_TIMESTAMP
 
 
