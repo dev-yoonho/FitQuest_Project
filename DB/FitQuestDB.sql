@@ -10,7 +10,7 @@ CREATE TABLE User (
     address VARCHAR(255),
     email VARCHAR(100) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
-    nickname VARCHAR(50) NOT NULL,
+    nickname VARCHAR(50) UNIQUE NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE,
     height FLOAT NOT NULL,
     weight FLOAT NOT NULL,
@@ -75,12 +75,12 @@ CREATE TABLE CharacterCustomization (
 
 CREATE TABLE Illustration (
     illustration_id INT AUTO_INCREMENT PRIMARY KEY,
-    file_path VARCHAR(255) NOT NULL
+    file_path VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE Voice (
     voice_id INT AUTO_INCREMENT PRIMARY KEY,
-    file_path VARCHAR(255) NOT NULL
+    file_path VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE Post (
@@ -108,7 +108,7 @@ CREATE TABLE Comment (
 
 CREATE TABLE Party (
     party_id INT AUTO_INCREMENT PRIMARY KEY,
-    party_name VARCHAR(100) NOT NULL,
+    party_name VARCHAR(100) UNIQUE NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -123,7 +123,7 @@ CREATE TABLE PartyMember (
 CREATE TABLE Monster (
 	monster_name VARCHAR(50) PRIMARY KEY,
     monster_desc TEXT NOT NULL,
-    img_path VARCHAR(255) NOT NULL,
+    img_path VARCHAR(255) UNIQUE NOT NULL,
     stamina INT DEFAULT 0,
     patk INT DEFAULT 0,
     def INT DEFAULT 0,
@@ -140,4 +140,15 @@ CREATE TABLE MonsterRaid (
     raided_at DATETIME DEFAULT NULL,
     FOREIGN KEY (party_id) REFERENCES Party(party_id),
     FOREIGN KEY (monster_name) REFERENCES Monster(monster_name)
+);
+
+CREATE TABLE MonsterRaidStory (
+	story_id INT AUTO_INCREMENT PRIMARY KEY,
+    raid_id INT,
+    user_id INT,
+    battle_desc TEXT NOT NULL,
+    sequence_order INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (raid_id) REFERENCES MonsterRaid(raid_id),
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
