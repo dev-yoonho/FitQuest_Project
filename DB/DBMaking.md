@@ -51,11 +51,11 @@
 - **비밀번호 (password)**: VARCHAR(255), NOT NULL
 - **이름 (name)**: VARCHAR(50), NOT NULL
 - **전화번호 (phone\_number)**: VARCHAR(20)
-- **닉네임 (nickname)**: VARCHAR(50), NOT NULL
+- **닉네임 (nickname)**: VARCHAR(50), NOT NULL, UNIQUE
 - **관리자 여부 (is\_admin)**: BOOLEAN, DEFAULT FALSE
 - **키**: FLOAT, NOT NULL
 - **체중**: FLOAT, NOT NULL
-- **나이**: FLOAT, NOT NULL
+- **나이**: INT, NOT NULL
 
 ### 2. 운동 (Exercise)
 
@@ -63,7 +63,7 @@
 - **사용자 ID (user\_id)**: FOREIGN KEY REFERENCES User(user\_id)
 - **운동 이름 (exercise\_name)**: VARCHAR(100), NOT NULL
 - **운동 유형 (exercise\_type)**: ENUM('근력', '유산소', '코어'), NOT NULL
-- **세트 수 (sets)**: INT
+- **세트 수 (exercise_set)**: INT
 - **반복 횟수 (repetitions)**: INT
 - **무게 (weight)**: FLOAT
 - **거리 (distance)**: FLOAT
