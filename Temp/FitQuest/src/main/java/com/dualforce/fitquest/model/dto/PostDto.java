@@ -31,4 +31,6 @@ public class PostDto {
     private Integer likes;
     // 첨부 파일 경로
     private String attachmentPath;
+    // 작성자 닉네임;
+    private String nickname;
 }

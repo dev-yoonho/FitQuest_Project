@@ -12,13 +12,13 @@ public interface CommentDao {
     List<CommentDto> selectPostComment(int postId);
 
     // 특정 사용자 닉네임으로 댓글 조회
-    List<CommentDto> selectUserNicknameComment(String userNickname);
+    List<CommentDto> selectUserNicknameComment(String nickname);
 
     // 댓글 수정
     int updateComment(CommentDto comment);
 
     // 댓글 삭제
-    int deleteComment(CommentDto comment);
+    int deleteComment(int commentId);
 
     // 댓글 추천수 증가
     int incrementCommentLikes(int commentId);

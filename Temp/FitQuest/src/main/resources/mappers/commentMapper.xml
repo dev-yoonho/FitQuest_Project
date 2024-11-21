@@ -12,7 +12,7 @@
     <select id="selectPostComment" parameterType="int" resultType="CommentDto">
         SELECT
             c.comment_id AS commentId,
-            u.
+            u.nickname as nickname,
             c.post_id AS postId,
             c.user_id AS userId,
             c.content AS content,
@@ -24,12 +24,50 @@
     </select>
     <!-- 특정 사용자 닉네임으로 댓글 조회 -->
     <select id="selectUserNicknameComment" parameterType="String" resultType="CommentDto">
-        SELECT *
-        FROM Comment
-        WHERE
+        SELECT
+            c.comment_id AS commentId,
+            u.nickname AS nickname,
+            c.post_id AS postId,
+            c.user_id AS userId,
+            c.content AS content,
+            c.created_at AS createdAt,
+            c.likes as likes
+        FROM Comment c
+        JOIN User u ON c.user_id = u.user_id
+        WHERE u.nickname = #{nickname}
     </select>
     <!-- 댓글 수정 -->
+    <update id="updateComment" parameterType="CommentDto">
+        UPDATE Comment
+        SET content = #{content}
+        WHERE comment_id = #{commentId}
+    </update>
     <!-- 댓글 삭제 -->
+    <delete id="deleteComment" parameterType="int">
+        DELETE
+        FROM Comment
+        WHERE comment_id = #{commentId}
+    </delete>
     <!-- 댓글 추천수 증가 -->
+    <update id="incrementCommentLikes" parameterType="int">
+        UPDATE Comment
+        SET likes = likes + 1
+        WHERE comment_id = #{commentId}
+    </update>
     <!-- 베스트 댓글 1개 표시 -->
+    <select id="selectBestComment" parameterType="int" resultType="CommentDto">
+        SELECT
+            c.comment_id AS commentId,
+            c.post_id AS postId,
+            c.user_id AS userId,
+            u.nickname AS nickname,
+            c.content AS content,
+            c.created_at AS createdAt,
+            c.likes AS likes
+        FROM Comment c
+        JOIN User u ON c.user_id = u.user_id
+        WHERE c.post_id = #{postId}
+        ORDER BY c.likes DESC
+        LIMIT 1
+    </select>
 </mapper>
