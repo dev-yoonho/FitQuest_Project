@@ -11,8 +11,8 @@ public interface UserDao {
     // 사용자 조회(id)
     UserDto selectUserById(int id);
 
-    // 사용자 조회(유저 네임)
-    UserDto selectUserByUsername(String username);
+    // 사용자 조회(닉네임)
+    UserDto selectUserByNickname(String nickName);
 
     // 사용자 전체 조회
     List<UserDto> selectAllUsers();
@@ -22,6 +22,4 @@ public interface UserDao {
     
     // 사용자 삭제
     int deleteUser(int id);
-
-    // 기능에 따른 추가 필요
 }

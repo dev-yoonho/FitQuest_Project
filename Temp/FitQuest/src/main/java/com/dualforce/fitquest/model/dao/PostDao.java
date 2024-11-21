@@ -18,6 +18,9 @@ public interface PostDao {
     // 게시글 조회(제목 + 내용)
     List<PostDto> selectPostByTitleContent(String title, String content);
 
+    // 게시글 조회(카테고리)
+    List<PostDto> selectPostByCategory(String category);
+
     // 게시글 조회(사용자 ID)
     // 사용자는 닉네임을 입력하지만 실제 DB에서는 ID로 조회하게 됨
     List<PostDto> selectPostByUserNickname(String userNickname);

@@ -6,8 +6,8 @@
 
     <!-- 사용자 생성 -->
     <insert id="insertUser" parameterType="UserDto" useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO User (email, password, name, phone_number, nickname, height, weight, age)
-        VALUES (#{email}, #{password}, #{name}, #{phoneNumber}, #{nickname}, #{height}, #{weight}, #{age})
+        INSERT INTO User (name, username, password, address, email, phone_number, nickname, height, weight, age)
+        VALUES (#{name}, #{userName}, #{password}, #{address}, #{email}, #{phoneNumber}, #{nickname}, #{height}, #{weight}, #{age})
     </insert>
 
     <!-- 사용자 조회 (ID) -->
@@ -15,7 +15,7 @@
         SELECT * FROM User WHERE user_id = #{id}
     </select>
 
-    <!-- 사용자 조회 (닉네임) -->
+    <!-- 사용자 조회 (유저 네임) -->
     <select id="selectUserByUsername" parameterType="string" resultType="UserDto">
         SELECT * FROM User WHERE username = #{username}
     </select>
