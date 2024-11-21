@@ -29,5 +29,4 @@ public interface DietDao {
     // 식단 기록 삭제
     int deleteDiet(int dietId);
 
-    // 기능에 따른 추가 필요
 }

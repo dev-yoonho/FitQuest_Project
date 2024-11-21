@@ -29,5 +29,4 @@ public interface ExerciseDao {
     // 운동 기록 삭제(운동 ID)
     int deleteExercise(int exerciseId);
 
-    // 기능에 따른 추가 필요
 }

@@ -1,7 +1,6 @@
 package com.dualforce.fitquest.model.dao;
 
 import com.dualforce.fitquest.model.dto.PostDto;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,12 +20,11 @@ public interface PostDao {
     // 게시글 조회(카테고리)
     List<PostDto> selectPostByCategory(String category);
 
-    // 게시글 조회(사용자 ID)
-    // 사용자는 닉네임을 입력하지만 실제 DB에서는 ID로 조회하게 됨
-    List<PostDto> selectPostByUserNickname(String userNickname);
+    // 게시글 조회(사용자 닉네임)
+    List<PostDto> selectPostByNickname(String nickname);
 
     // 게시글 전체 조회(등록순, 최신순, 추천순, 조회순)
-    List<PostDto> selectAllPostWithPaging(@Param("sortBy") String sortBy, @Param("offset") int offset, @Param("limit") int limit);
+    List<PostDto> selectAllPostWithPaging(String sortBy, int offset, int limit);
 
     // 게시글 수정
     int updatePost(PostDto post);
@@ -34,6 +32,9 @@ public interface PostDao {
     // 게시글 삭제
     int deletePost(int postId);
 
-    // 조회수 증가
+    // 조회 수 증가
     int incrementViews(int postId);
+
+    // 추천 수 증가
+    int incrementLikes(int postId);
 }

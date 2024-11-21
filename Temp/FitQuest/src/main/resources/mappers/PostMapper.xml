@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dualforce.fitquest.model.dao.PostDao">
+    <!-- 게시글 등록 -->
+    <insert id="insertPost" parameterType="PostDto" useGeneratedKeys="true" keyProperty="postId">
+        INSERT INTO Post (user_id, category, title, content, attachment_path)
+        VALUES (#{userId}, #{category}, #{title}, #{content}, #{attachmentPath})
+    </insert>
+    <!-- 게시글 조회(제목) -->
+    <select id="selectPostByTitle" parameterType="String" resultType="PostDto">
+        SELECT
+            p.post_id AS postId,
+            p.user_id AS userId,
+            u.nickname AS nickname,
+            p.category AS category,
+            p.title AS title,
+            p.content AS content,
+            p.attachment_path AS attachmentPath,
+            p.created_at AS createdAt,
+            p.views AS views,
+            p.likes AS likes
+        FROM Post p
+        JOIN User u ON p.user_id = u.user_id
+        WHERE p.title = #{title}
+    </select>
+    <!-- 게시글 조회(내용) -->
+    <select id="selectPostByContent" parameterType="String" resultType="PostDto">
+        SELECT
+            p.post_id AS postId,
+            p.user_id AS userId,
+            u.nickname AS nickname,
+            p.category AS category,
+            p.title AS title,
+            p.content AS content,
+            p.attachment_path AS attachmentPath,
+            p.created_at AS createdAt,
+            p.views AS views,
+            p.likes AS likes
+        FROM Post p
+        JOIN User u ON p.user_id = u.user_id
+        WHERE content = #{content}
+    </select>
+    <!-- 게시글 조회(제목 + 내용) -->
+    <select id="selectPostByTitleContent" parameterType="map" resultType="PostDto">
+        SELECT
+            p.post_id AS postId,
+            p.user_id AS userId,
+            u.nickname AS nickname,
+            p.category AS category,
+            p.title AS title,
+            p.content AS content,
+            p.attachment_path AS attachmentPath,
+            p.created_at AS createdAt,
+            p.views AS views,
+            p.likes AS likes
+        FROM Post p
+        JOIN User u ON p.user_id = u.user_id
+        WHERE title = #{title} AND content = #{content}
+    </select>
+    <!-- 게시글 조회(카테고리) -->
+    <select id="selectPostByCategory" parameterType="String" resultType="PostDto">
+        SELECT
+            p.post_id AS postId,
+            p.user_id AS userId,
+            u.nickname AS nickname,
+            p.category AS category,
+            p.title AS title,
+            p.content AS content,
+            p.attachment_path AS attachmentPath,
+            p.created_at AS createdAt,
+            p.views AS views,
+            p.likes AS likes
+        FROM Post p
+        JOIN User u ON p.user_id = u.user_id
+        WHERE category = #{category}
+    </select>
+    <!-- 게시글 조회(사용자 닉네임) -->
+    <select id="selectPostByNickname" parameterType="String" resultType="PostDto">
+        SELECT
+            p.post_id AS postId,
+            p.user_id AS userId,
+            u.nickname AS nickname,
+            p.category AS category,
+            p.title AS title,
+            p.content AS content,
+            p.attachment_path AS attachmentPath,
+            p.created_at AS createdAt,
+            p.views AS views,
+            p.likes AS likes
+        FROM Post p
+        JOIN User u ON p.user_id = u.user_id
+        WHERE u.nickname = #{nickname}
+    </select>
+    <!-- 게시글 전체 조회(등록순, 최신순, 추천순, 조회순) -->
+    <select id="selectAllPostWithPaging" parameterType="map" resultType="PostDto">
+        SELECT
+            p.post_id AS postId,
+            p.user_id AS userId,
+            u.nickname AS nickname,
+            p.category AS category,
+            p.title AS title,
+            p.content AS content,
+            p.attachment_path AS attachmentPath,
+            p.created_at AS createdAt,
+            p.views AS views,
+            p.likes AS likes
+        FROM Post p
+        JOIN User u ON p.user_id = u.user_id
+        <choose>
+            <when test="sortBy == 'created_at'">
+                ORDER BY p.created_at
+            </when>
+            <when test="sortBy == 'created_at_reverse'">
+                ORDER BY p.created_at DESC
+            </when>
+            <when test="sortBy == 'likes'">
+                ORDER BY p.likes
+            </when>
+            <when test="sortBy == 'views'">
+                ORDER BY p.views
+            </when>
+        </choose>
+        OFFSET #{offset} LIMIT #{limit}
+    </select>
+    <!-- 게시글 수정 -->
+    <update id="updatePost" parameterType="PostDto">
+        UPDATE Post
+        SET category = #{category},
+        title = #{title},
+        content = #{content},
+        attachment_path = #{attachmentPath}
+    </update>
+    <!-- 게시글 삭제 -->
+    <delete id="deletePost" parameterType="int">
+        DELETE
+        FROM Post
+        WHERE post_id = #{postId}
+    </delete>
+    <!-- 조회 수 증가 -->
+    <update id="incrementViews" parameterType="int">
+        UPDATE Post
+        SET views = views + 1
+        WHERE post_id = #{postId}
+    </update>
+    <!-- 추천 수 증가-->
+    <update id="incrementLikes" parameterType="int">
+        UPDATE Post
+        SET likes = likes + 1
+        WHERE post_id = #{postId}
+    </update>
+</mapper>

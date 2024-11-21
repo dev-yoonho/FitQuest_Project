@@ -11,10 +11,10 @@ public interface CommentDao {
     // 게시글의 댓글 조회
     List<CommentDto> selectPostComment(int postId);
 
-    // 특정 사용자 닉네임으로 댓글 조회(관리자 전용)
+    // 특정 사용자 닉네임으로 댓글 조회
     List<CommentDto> selectUserNicknameComment(String userNickname);
 
-    // 댓글 수정(관리자 전용)
+    // 댓글 수정
     int updateComment(CommentDto comment);
 
     // 댓글 삭제

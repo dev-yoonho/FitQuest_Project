@@ -24,4 +24,6 @@ public class CommentDto {
     private LocalDateTime createdAt;
     // 추천 수
     private Integer likes;
+    // 작성자 닉네임;
+    private String nickname;
 }

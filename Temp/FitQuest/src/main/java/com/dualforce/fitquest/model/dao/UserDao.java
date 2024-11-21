@@ -12,7 +12,7 @@ public interface UserDao {
     UserDto selectUserById(int id);
 
     // 사용자 조회(닉네임)
-    UserDto selectUserByNickname(String nickName);
+    UserDto selectUserByNickname(String nickname);
 
     // 사용자 전체 조회
     List<UserDto> selectAllUsers();
