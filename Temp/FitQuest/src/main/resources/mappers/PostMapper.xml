@@ -8,8 +8,8 @@
         INSERT INTO Post (user_id, category, title, content, attachment_path)
         VALUES (#{userId}, #{category}, #{title}, #{content}, #{attachmentPath})
     </insert>
-    <!-- 게시글 조회(제목) -->
-    <select id="selectPostByTitle" parameterType="String" resultType="PostDto">
+    <!-- 게시글 조건 검색 -->
+    <select id="selectPostsByConditions" parameterType="map" resultType="PostDto">
         SELECT
             p.post_id AS postId,
             p.user_id AS userId,
@@ -23,91 +23,19 @@
             p.likes AS likes
         FROM Post p
         JOIN User u ON p.user_id = u.user_id
-        WHERE p.title = #{title}
-    </select>
-    <!-- 게시글 조회(내용) -->
-    <select id="selectPostByContent" parameterType="String" resultType="PostDto">
-        SELECT
-            p.post_id AS postId,
-            p.user_id AS userId,
-            u.nickname AS nickname,
-            p.category AS category,
-            p.title AS title,
-            p.content AS content,
-            p.attachment_path AS attachmentPath,
-            p.created_at AS createdAt,
-            p.views AS views,
-            p.likes AS likes
-        FROM Post p
-        JOIN User u ON p.user_id = u.user_id
-        WHERE content = #{content}
-    </select>
-    <!-- 게시글 조회(제목 + 내용) -->
-    <select id="selectPostByTitleContent" parameterType="map" resultType="PostDto">
-        SELECT
-            p.post_id AS postId,
-            p.user_id AS userId,
-            u.nickname AS nickname,
-            p.category AS category,
-            p.title AS title,
-            p.content AS content,
-            p.attachment_path AS attachmentPath,
-            p.created_at AS createdAt,
-            p.views AS views,
-            p.likes AS likes
-        FROM Post p
-        JOIN User u ON p.user_id = u.user_id
-        WHERE title = #{title} AND content = #{content}
-    </select>
-    <!-- 게시글 조회(카테고리) -->
-    <select id="selectPostByCategory" parameterType="String" resultType="PostDto">
-        SELECT
-            p.post_id AS postId,
-            p.user_id AS userId,
-            u.nickname AS nickname,
-            p.category AS category,
-            p.title AS title,
-            p.content AS content,
-            p.attachment_path AS attachmentPath,
-            p.created_at AS createdAt,
-            p.views AS views,
-            p.likes AS likes
-        FROM Post p
-        JOIN User u ON p.user_id = u.user_id
-        WHERE category = #{category}
-    </select>
-    <!-- 게시글 조회(사용자 닉네임) -->
-    <select id="selectPostByNickname" parameterType="String" resultType="PostDto">
-        SELECT
-            p.post_id AS postId,
-            p.user_id AS userId,
-            u.nickname AS nickname,
-            p.category AS category,
-            p.title AS title,
-            p.content AS content,
-            p.attachment_path AS attachmentPath,
-            p.created_at AS createdAt,
-            p.views AS views,
-            p.likes AS likes
-        FROM Post p
-        JOIN User u ON p.user_id = u.user_id
-        WHERE u.nickname = #{nickname}
-    </select>
-    <!-- 게시글 전체 조회(등록순, 최신순, 추천순, 조회순) -->
-    <select id="selectAllPostWithPaging" parameterType="map" resultType="PostDto">
-        SELECT
-            p.post_id AS postId,
-            p.user_id AS userId,
-            u.nickname AS nickname,
-            p.category AS category,
-            p.title AS title,
-            p.content AS content,
-            p.attachment_path AS attachmentPath,
-            p.created_at AS createdAt,
-            p.views AS views,
-            p.likes AS likes
-        FROM Post p
-        JOIN User u ON p.user_id = u.user_id
+        WHERE 1=1
+        <if test="title != null and title != ''">
+            AND p.title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            AND p.content LIKE CONCAT('%', #{content}, '%')
+        </if>
+        <if test="category != null and category != ''">
+            AND p.category = #{category}
+        </if>
+        <if test="nickname != null and nickname != ''">
+            AND u.nickname = #{nickname}
+        </if>
         <choose>
             <when test="sortBy == 'created_at'">
                 ORDER BY p.created_at
@@ -116,13 +44,16 @@
                 ORDER BY p.created_at DESC
             </when>
             <when test="sortBy == 'likes'">
-                ORDER BY p.likes
+                ORDER BY p.likes DESC
             </when>
             <when test="sortBy == 'views'">
-                ORDER BY p.views
+                ORDER BY p.views DESC
             </when>
+            <otherwise>
+                ORDER BY p.created_at DESC
+            </otherwise>
         </choose>
-        OFFSET #{offset} LIMIT #{limit}
+        LIMIT #{offset}, #{limit}
     </select>
     <!-- 게시글 수정 -->
     <update id="updatePost" parameterType="PostDto">
