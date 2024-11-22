@@ -22,6 +22,12 @@
         JOIN User u ON c.user_id = u.user_id
         WHERE c.post_id = #{postId}
     </select>
+    <!-- 댓글 Id로 댓글 조회 -->
+    <select id="selectComment" parameterType="int" resultType="CommentDto">
+        SELECT *
+        FROM Comment
+        WHERE comment_id = #{commentId}
+    </select>
     <!-- 특정 사용자 닉네임으로 댓글 조회 -->
     <select id="selectUserNicknameComment" parameterType="String" resultType="CommentDto">
         SELECT

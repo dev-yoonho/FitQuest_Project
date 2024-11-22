@@ -11,6 +11,9 @@ public interface CommentDao {
     // 게시글의 댓글 조회
     List<CommentDto> selectPostComment(int postId);
 
+    // 댓글 Id로 조회
+    CommentDto selectComment(int commentId);
+
     // 특정 사용자 닉네임으로 댓글 조회
     List<CommentDto> selectUserNicknameComment(String nickname);
 

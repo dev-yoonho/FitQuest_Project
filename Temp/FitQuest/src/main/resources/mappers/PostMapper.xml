@@ -81,4 +81,20 @@
         SET likes = likes + 1
         WHERE post_id = #{postId}
     </update>
+    <!-- 게시물 Id로 개별 조회-->
+    <select id="selectPostById" parameterType="int" resultType="PostDto">
+        SELECT *
+        FROM Post
+        WHERE post_id =  #{postId}
+    </select>
+    <!-- 조건 만족 게시글 검색 -->
+    <select id="selectEligiblePosts" resultType="Integer">
+        SELECT p.post_id
+        FROM Post p
+        LEFT JOIN Comment c ON p.post_id = c.post_id
+        WHERE p.category = '질문'
+        AND TIMESTAMPDIFF(HOUR, p.created_at, NOW()) >= 24
+        GROUP BY p.post_id
+        HAVING COUNT(c.comment_id) &lt;= 1;
+    </select>
 </mapper>

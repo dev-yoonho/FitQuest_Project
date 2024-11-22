@@ -12,13 +12,17 @@ public interface PostService {
     List<PostDto> readAllPosts();
 
     // 게시글 수정
-    PostDto editPost(PostDto post);
+    int editPost(PostDto post);
 
     // 게시글 삭제
     int deletePost(int postid);
 
     // 게시글 조건 검색
-
+    List<PostDto> readConditionSearchPosts(String title, String content, String category, String nickname, String sortBy, int offset, int limit);
 
     // 게시글 상세 페이지
+    PostDto readPost(int postid);
+
+    // 게시글 추천
+    void recommendPost(int postid);
 }
