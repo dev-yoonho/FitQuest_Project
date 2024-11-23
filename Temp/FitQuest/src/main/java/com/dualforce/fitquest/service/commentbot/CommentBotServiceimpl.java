@@ -21,9 +21,7 @@ public class CommentBotServiceimpl implements CommentBotService {
     }
 
     @Override
-    public void addChatbotCommentToPost(int postId) {
-        String postContent = postDao.selectPostById(postId).getContent();
-        // Spring AI를 사용해서 바로 응답을 받을 수 있나? API Key는 있어.
+    public void addChatbotCommentToPost(int postId, String comment) {
 
     }
 
@@ -31,7 +29,7 @@ public class CommentBotServiceimpl implements CommentBotService {
     public void processChatbotComments() {
         List<Integer> eligiblePosts = findEligiblePosts();
         for (Integer postId : eligiblePosts) {
-            addChatbotCommentToPost(postId);
+            // addChatbotCommentToPost(postId);
         }
     }
 }
