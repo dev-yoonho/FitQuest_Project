@@ -85,7 +85,13 @@
     <select id="selectPostById" parameterType="int" resultType="PostDto">
         SELECT *
         FROM Post
-        WHERE post_id =  #{postId}
+        WHERE post_id = #{postId}
+    </select>
+    <!-- 사용자 Id로 게시물 조회 -->
+    <select id="selectPostsByUserId" parameterType="int" resultType="PostDto">
+        SELECT *
+        FROM Post
+        WHERE user_id = #{userId}
     </select>
     <!-- 조건 만족 게시글 검색 -->
     <select id="selectEligiblePosts" resultType="Integer">

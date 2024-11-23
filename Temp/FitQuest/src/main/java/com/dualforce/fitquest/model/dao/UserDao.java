@@ -11,6 +11,9 @@ public interface UserDao {
     // 사용자 조회(id)
     UserDto selectUserById(int id);
 
+    // 사용자 조회(이메일)
+    UserDto selectUserByEmail(String email);
+
     // 사용자 조회(닉네임)
     UserDto selectUserByNickname(String nickname);
 

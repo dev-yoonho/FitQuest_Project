@@ -12,8 +12,11 @@ public interface PostDao {
     // 게시글 조건 검색
     List<PostDto> selectPostByConditions(String title, String content, String category, String nickname, String sortBy, int offset, int limit);
 
-    // 게시물 Id로 개별 조회
+    // 게시글 Id로 개별 조회
     PostDto selectPostById(int postId);
+
+    // 게시글 사용자 Id로 조회
+    List<PostDto> selectPostsByUserId(int userId);
 
     // 게시글 수정
     int updatePost(PostDto post);
