@@ -6,6 +6,8 @@ import com.dualforce.fitquest.model.dao.UserDao;
 import com.dualforce.fitquest.model.dto.DietDto;
 import com.dualforce.fitquest.model.dto.ExerciseDto;
 import com.dualforce.fitquest.model.dto.UserDto;
+import com.dualforce.fitquest.util.PasswordUtil;
+import com.dualforce.fitquest.validator.PasswordValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int createUser(UserDto user) {
+        if (!PasswordValidator.isValid(user.getPassword())) {
+            throw new IllegalArgumentException("Password does not meet the required criteria.");
+        }
+
+        String encodedPassword = PasswordUtil.encodePassword(user.getPassword());
+        user.setPassword(encodedPassword);
+
         userDao.insertUser(user);
         return user.getUserId();
     }

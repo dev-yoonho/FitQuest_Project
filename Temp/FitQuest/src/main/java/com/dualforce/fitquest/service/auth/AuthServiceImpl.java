@@ -2,6 +2,9 @@ package com.dualforce.fitquest.service.auth;
 
 import com.dualforce.fitquest.model.dao.UserDao;
 import com.dualforce.fitquest.model.dto.UserDto;
+import com.dualforce.fitquest.util.JwtBlacklist;
+import com.dualforce.fitquest.util.JwtUtil;
+import com.dualforce.fitquest.util.PasswordUtil;
 
 public class AuthServiceImpl implements AuthService {
     private final UserDao userDao;
@@ -13,16 +16,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String login(String email, String password) {
         UserDto user = userDao.selectUserByEmail(email);
-        if (user == null || !password.equals(user.getPassword())) {
+        if (user == null || !PasswordUtil.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid email or password");
         }
         // 토큰은 어떻게 생성?
-        return "";
+        return JwtUtil.generateToken(user.getEmail());
     }
 
     @Override
     public void logout(String token) {
-        // 토큰 무효화 로직은 어떻게?
-        System.out.println("Logout token: " + token);
+        JwtBlacklist.addToBlacklist(token);
+
+        System.out.println("Token added to blacklist: " + token);
     }
 }
