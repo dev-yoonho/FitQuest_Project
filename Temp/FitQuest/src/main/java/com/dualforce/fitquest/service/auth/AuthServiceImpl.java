@@ -5,7 +5,9 @@ import com.dualforce.fitquest.model.dto.UserDto;
 import com.dualforce.fitquest.util.JwtBlacklist;
 import com.dualforce.fitquest.util.JwtUtil;
 import com.dualforce.fitquest.util.PasswordUtil;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthServiceImpl implements AuthService {
     private final UserDao userDao;
 
@@ -19,7 +21,6 @@ public class AuthServiceImpl implements AuthService {
         if (user == null || !PasswordUtil.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid email or password");
         }
-        // 토큰은 어떻게 생성?
         return JwtUtil.generateToken(user.getEmail());
     }
 
