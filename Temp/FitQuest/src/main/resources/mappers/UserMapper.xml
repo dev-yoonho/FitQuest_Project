@@ -46,5 +46,28 @@
     <delete id="deleteUser" parameterType="int">
         DELETE FROM User WHERE user_id = #{id}
     </delete>
-
+    <!-- 특정 운동 기록의 소유자 조회 -->
+    <select id="selectExerciseOwnerById" parameterType="int" resultType="int">
+        SELECT user_id
+        FROM Exercise
+        WHERE exercise_id = #{exerciseId};
+    </select>
+    <!-- 특정 식단 기록의 소유자 조회 -->
+    <select id="selectDietOwnerById" parameterType="int" resultType="int">
+        SELECT user_id
+        FROM Diet
+        WHERE diet_id = #{dietId};
+    </select>
+    <!-- 특정 게시글의 소유자 조회 -->
+    <select id="selectPostOwnerById" parameterType="int" resultType="int">
+        SELECT user_id
+        FROM Post
+        WHERE post_id = #{postId};
+    </select>
+    <!-- 특정 댓글의 소유자 조회 -->
+    <select id="selectCommentOwnerById" parameterType="int" resultType="int">
+        SELECT user_id
+        FROM Comment
+        WHERE comment_id = #{commentId};
+    </select>
 </mapper>

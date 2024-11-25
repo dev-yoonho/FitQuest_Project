@@ -25,4 +25,16 @@ public interface UserDao {
     
     // 사용자 삭제
     int deleteUser(int id);
+
+    // 특정 운동 기록의 소유자 조회
+    int selectExerciseOwnerById(int exerciseId);
+
+    // 특정 식단 기록의 소유자 조회
+    int selectDietOwnerById(int dietId);
+
+    // 특정 게시글 소유자 ID 조회
+    int selectPostOwnerById(int postId);
+
+    // 특정 댓글 소유자 ID 조회
+    int selectCommentOwnerById(int commentId);
 }
