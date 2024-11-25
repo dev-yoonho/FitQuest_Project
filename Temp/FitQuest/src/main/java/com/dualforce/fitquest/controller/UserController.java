@@ -21,7 +21,7 @@ public class UserController {
     }
 
     // 사용자 등록 (성공 시 201 Created)
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Integer> createUser(@RequestBody UserDto user) {
         int userId = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userId);
