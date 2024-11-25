@@ -14,7 +14,6 @@ import java.util.List;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -26,8 +25,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/auth/login",
                                 "/users/signup",
-                                "/posts",
-                                "/posts/{postId}",
+                                "/posts/**",
                                 "/posts/search"
                         ).permitAll() // 비회원 접근 허용
                         .anyRequest().authenticated() // 나머지 요청 인증 필요
@@ -41,9 +39,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // 모든 Origin 허용
+        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Vue 개발 서버 허용
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-CSRF-TOKEN"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

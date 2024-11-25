@@ -9,7 +9,7 @@
         VALUES (#{userId}, #{category}, #{title}, #{content}, #{attachmentPath})
     </insert>
     <!-- 게시글 조건 검색 -->
-    <select id="selectPostsByConditions" parameterType="map" resultType="PostDto">
+    <select id="selectPostByConditions" parameterType="map" resultType="PostDto">
         SELECT
             p.post_id AS postId,
             p.user_id AS userId,
@@ -53,8 +53,22 @@
                 ORDER BY p.created_at DESC
             </otherwise>
         </choose>
-        LIMIT #{offset}, #{limit}
+        LIMIT
+        <if test="limit != null and limit &gt; 0">
+            #{limit}
+        </if>
+        <if test="limit == null or limit &lt;= 0">
+            10
+        </if>
+        OFFSET
+        <if test="offset != null and offset &gt;= 0">
+            #{offset}
+        </if>
+        <if test="offset == null or offset &lt; 0">
+            0
+        </if>
     </select>
+
     <!-- 게시글 수정 -->
     <update id="updatePost" parameterType="PostDto">
         UPDATE Post
