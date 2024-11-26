@@ -1,7 +1,6 @@
 <template>
   <header class="header">
     <div class="logo">
-      <img src="" alt="서비스 로고" />
       <span class="service-name">FitQuest</span>
     </div>
     <nav class="nav-bar">

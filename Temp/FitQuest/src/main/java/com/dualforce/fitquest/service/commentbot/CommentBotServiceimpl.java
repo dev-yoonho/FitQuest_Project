@@ -35,7 +35,7 @@ public class CommentBotServiceimpl implements CommentBotService {
     public void addChatbotCommentToPost(int postId, String comment) {
         CommentDto chatbotComment = CommentDto.builder()
                 .postId(postId)
-                .userId(0) // 챗봇 ID를 뭘로 할지 정해야 함
+                .userId(1) // 챗봇 ID는 무조건 1
                 .content(comment)
                 .build();
         commentService.createComment(chatbotComment);

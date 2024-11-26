@@ -2,7 +2,6 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
-            <img src="" alt="서비스 로고" />
             <span class="service-name">FitQuest</span>
             </div>
             <div class="footer-links">

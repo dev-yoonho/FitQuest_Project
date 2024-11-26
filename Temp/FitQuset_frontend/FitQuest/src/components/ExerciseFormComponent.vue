@@ -80,7 +80,7 @@
           <label for="speed">속도 (km/h)</label>
           <input
             id="speed"
-            :value="calculatedSpeed"
+            :value="exercise.speed || '0.00'"
             readonly
             placeholder="자동 계산"
           />
@@ -132,17 +132,13 @@
 <script setup>
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/userStore';
-import apiClient from '@/api/axios';
 import { useRouter } from 'vue-router';
+import apiClient from '@/api/axios';
 
-// emit 선언
 const emit = defineEmits(['record-added']);
-
-// Pinia 상태
 const userStore = useUserStore();
 const router = useRouter();
 
-// 운동 데이터
 const exercise = ref({
   userId: userStore.user?.userId,
   exerciseName: '',
@@ -156,19 +152,13 @@ const exercise = ref({
   indoorOutdoor: '실내',
 });
 
-// 계산된 속도
-const calculatedSpeed = ref('');
-
-// 속도 계산 함수
 const calculateSpeed = () => {
   const { distance, time } = exercise.value;
   if (distance && time) {
-    calculatedSpeed.value = ((distance / (time / 60)).toFixed(2) || '0');
-    exercise.value.speed = parseFloat(calculatedSpeed.value);
+    exercise.value.speed = (distance / (time / 60)).toFixed(2);
   }
 };
 
-// 제출 처리
 const handleSubmit = async () => {
   try {
     if (!userStore.token) {
@@ -182,8 +172,7 @@ const handleSubmit = async () => {
     });
 
     alert('운동 기록이 성공적으로 추가되었습니다.');
-    // 폼 초기화
-    exercise.value = {
+    Object.assign(exercise.value, {
       userId: userStore.user?.userId,
       exerciseName: '',
       exerciseType: '',
@@ -194,12 +183,10 @@ const handleSubmit = async () => {
       time: null,
       speed: null,
       indoorOutdoor: '실내',
-    };
-    calculatedSpeed.value = '';
+    });
     emit('record-added');
   } catch (error) {
     console.error('Error adding exercise record:', error);
-
     if (error.response?.status === 403) {
       alert('접근 권한이 없습니다. 다시 로그인해주세요.');
       router.push({ name: 'login' });
