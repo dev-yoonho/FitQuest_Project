@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         String encodedPassword = PasswordUtil.encodePassword(user.getPassword());
         user.setPassword(encodedPassword);
-        
+
         userDao.updateUser(user);
         return user.getUserId();
     }
