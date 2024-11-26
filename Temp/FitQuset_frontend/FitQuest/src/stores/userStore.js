@@ -61,5 +61,9 @@ export const useUserStore = defineStore('user', {
         return null;
       }
     },
+    // 사용자 정보를 업데이트하는 메서드
+    setUser(updatedUser) {
+      this.user = { ...this.user, ...updatedUser };
+    },
   },
 });

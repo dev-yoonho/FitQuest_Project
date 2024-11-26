@@ -1,6 +1,8 @@
 package com.dualforce.fitquest.controller;
 
 import com.dualforce.fitquest.model.dto.CommentDto;
+
+import com.dualforce.fitquest.service.admin.AdminService;
 import com.dualforce.fitquest.service.comment.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
@@ -15,9 +17,11 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final AdminService adminService;
 
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, AdminService adminService) {
         this.commentService = commentService;
+        this.adminService = adminService;
     }
 
     // 댓글 등록
@@ -82,5 +86,15 @@ public class CommentController {
         commentService.recommendComment(commentId);
         return ResponseEntity.ok("Comment with ID " + commentId + " has been recommended.");
     }
+
+    // 내 댓글 조회 추가
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("isAuthenticated() and #userId == authentication.principal.userId")
+    @Operation(summary = "사용자가 작성한 댓글 조회", description = "특정 사용자가 작성한 댓글을 조회합니다.")
+    public ResponseEntity<List<CommentDto>> readCommentsByUser(@PathVariable int userId) {
+        List<CommentDto> userComments = adminService.readCommentsByUserId(userId);
+        return ResponseEntity.ok(userComments);
+    }
+
 }
 

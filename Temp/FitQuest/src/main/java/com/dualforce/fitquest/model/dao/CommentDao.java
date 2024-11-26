@@ -28,4 +28,7 @@ public interface CommentDao {
 
     // 베스트 댓글 1개 표시
     CommentDto selectBestComment(int postId);
+
+    // 특정 사용자 ID로 댓글 조회
+    List<CommentDto> selectUserIdComment(int userId);
 }

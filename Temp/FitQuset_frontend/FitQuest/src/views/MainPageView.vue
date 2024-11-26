@@ -2,8 +2,8 @@
     <div class="main-page">
       <!-- 상단 헤더 -->
       <header class="header">
-        <div v-if="isLoggedIn" class="welcome-box">
-          <p>{{ userNickname }} 님! 환영합니다.</p>
+        <div v-if="isLoggedIn" class="">
+          <p><strong>{{ userNickname }} 님!</strong> 환영합니다.</p>
         </div>
       </header>
   

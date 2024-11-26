@@ -1,6 +1,7 @@
 package com.dualforce.fitquest.controller;
 
 import com.dualforce.fitquest.model.dto.PostDto;
+import com.dualforce.fitquest.service.admin.AdminService;
 import com.dualforce.fitquest.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
@@ -19,9 +20,11 @@ public class PostController {
     private final PostService postService;
 
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+    private final AdminService adminService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, AdminService adminService) {
         this.postService = postService;
+        this.adminService = adminService;
     }
 
     // 게시글 등록
@@ -103,5 +106,15 @@ public class PostController {
     public ResponseEntity<String> recommendPost(@PathVariable int postId) {
         postService.recommendPost(postId);
         return ResponseEntity.ok("Post with ID " + postId + " has been recommended.");
+    }
+
+    // 내 작성글 조회 추가
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("isAuthenticated() and #userId == authentication.principal.userId")
+    @Operation(summary = "사용자가 작성한 게시글 조회", description = "특정 사용자가 작성한 게시글을 조회합니다.")
+    public ResponseEntity<List<PostDto>> readPostsByUser(@PathVariable int userId) {
+        logger.info("Fetching posts for user ID: " + userId);
+        List<PostDto> userPosts = adminService.readPostsByUserId(userId);
+        return ResponseEntity.ok(userPosts);
     }
 }

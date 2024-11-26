@@ -67,6 +67,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int editUser(UserDto user) {
+        if (!PasswordValidator.isValid(user.getPassword())) {
+            throw new IllegalArgumentException("Password does not meet the required criteria.");
+        }
+
+        String encodedPassword = PasswordUtil.encodePassword(user.getPassword());
+        user.setPassword(encodedPassword);
+        
         userDao.updateUser(user);
         return user.getUserId();
     }

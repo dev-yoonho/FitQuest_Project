@@ -14,6 +14,9 @@ public interface AdminService {
     // 사용자별 댓글 조회
     List<CommentDto> readCommentsByNickname(String nickname);
 
+    // 사용자별 댓글 조회 - ID
+    List<CommentDto> readCommentsByUserId(int userId);
+
     // 전체 운동 기록 조회
     List<ExerciseDto> readExercisesByUserId(int userId);
 

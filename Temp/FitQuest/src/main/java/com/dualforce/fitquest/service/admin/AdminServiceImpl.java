@@ -38,6 +38,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public List<CommentDto> readCommentsByUserId(int userId) {
+        return commentDao.selectUserIdComment(userId);
+    }
+
+    @Override
     public List<ExerciseDto> readExercisesByUserId(int userId) {
         return exerciseDao.selectExercisesByUserId(userId);
     }

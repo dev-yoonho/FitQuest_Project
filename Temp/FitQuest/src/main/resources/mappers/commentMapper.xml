@@ -76,4 +76,10 @@
         ORDER BY c.likes DESC
         LIMIT 1
     </select>
+    <!-- 특정 사용자 ID로 댓글 조회 -->
+    <select id="selectUserIdComment" parameterType="int" resultType="CommentDto">
+        SELECT *
+        FROM Comment
+        WHERE user_id = #{userId}
+    </select>
 </mapper>
