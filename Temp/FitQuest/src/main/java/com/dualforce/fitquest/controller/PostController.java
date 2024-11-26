@@ -3,6 +3,8 @@ package com.dualforce.fitquest.controller;
 import com.dualforce.fitquest.model.dto.PostDto;
 import com.dualforce.fitquest.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +17,8 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     public PostController(PostService postService) {
         this.postService = postService;
@@ -48,10 +52,21 @@ public class PostController {
             @RequestParam(required = false) String nickname,
             @RequestParam(defaultValue = "created_at_reverse") String sortBy,
             @RequestParam(defaultValue = "0") int offset,
-            @RequestParam(defaultValue = "20") int limit) {
+            @RequestParam(defaultValue = "10") int limit) {
+        // 기본값 적용 확인
+        offset = Math.max(offset, 0);
+        limit = Math.max(limit, 1);
+
         List<PostDto> posts = postService.readConditionSearchPosts(title, content, category, nickname, sortBy, offset, limit);
-        return ResponseEntity.ok(posts);
+
+        // 총 게시글 수 계산
+        int totalPosts = postService.countTotalPosts(title, content, category, nickname);
+
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(totalPosts))
+                .body(posts);
     }
+
 
     // 특정 게시글 조회 및 조회 수 증가
     @GetMapping("/{postId}")

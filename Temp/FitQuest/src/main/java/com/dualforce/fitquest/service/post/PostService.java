@@ -25,4 +25,7 @@ public interface PostService {
 
     // 게시글 추천
     void recommendPost(int postid);
+
+    // 전체 게시글 수 계산
+    int countTotalPosts(String title, String content, String category, String nickname);
 }

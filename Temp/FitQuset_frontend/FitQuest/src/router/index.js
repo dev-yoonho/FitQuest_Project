@@ -7,7 +7,7 @@ import PostDetailPageView from '@/views/PostDetailPageView.vue';
 import RecordPageView from '@/views/RecordPageView.vue';
 import MyPageView from '@/views/MyPageView.vue';
 import AdminPageView from '@/views/AdminPageView.vue';
-import { useUserStore } from '../stores/userStore.js'; // Pinia 스토어
+import { useUserStore } from '@/stores/userStore.js'; // Pinia 스토어
 
 const routes = [
   {
@@ -91,7 +91,7 @@ router.beforeEach((to, from, next) => {
   const userStore = useUserStore(); // Pinia에서 사용자 상태 가져오기
 
   // 인증이 필요한 페이지 처리
-  if (to.meta.requiresAuth && !userStore.isLoggedIn) {
+  if (to.meta.requiresAuth && !userStore.isAuthenticated) {
     next('/login'); // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
   } 
   // 관리자 권한이 필요한 페이지 처리

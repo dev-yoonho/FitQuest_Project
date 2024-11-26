@@ -11,16 +11,16 @@
     <!-- 게시글 조건 검색 -->
     <select id="selectPostByConditions" parameterType="map" resultType="PostDto">
         SELECT
-            p.post_id AS postId,
-            p.user_id AS userId,
-            u.nickname AS nickname,
-            p.category AS category,
-            p.title AS title,
-            p.content AS content,
-            p.attachment_path AS attachmentPath,
-            p.created_at AS createdAt,
-            p.views AS views,
-            p.likes AS likes
+        p.post_id AS postId,
+        p.user_id AS userId,
+        u.nickname AS nickname,
+        p.category AS category,
+        p.title AS title,
+        p.content AS content,
+        p.attachment_path AS attachmentPath,
+        p.created_at AS createdAt,
+        p.views AS views,
+        p.likes AS likes
         FROM Post p
         JOIN User u ON p.user_id = u.user_id
         WHERE 1=1
@@ -53,22 +53,9 @@
                 ORDER BY p.created_at DESC
             </otherwise>
         </choose>
-        LIMIT
-        <if test="limit != null and limit &gt; 0">
-            #{limit}
-        </if>
-        <if test="limit == null or limit &lt;= 0">
-            10
-        </if>
-        OFFSET
-        <if test="offset != null and offset &gt;= 0">
-            #{offset}
-        </if>
-        <if test="offset == null or offset &lt; 0">
-            0
-        </if>
+        LIMIT #{limit}
+        OFFSET #{offset}
     </select>
-
     <!-- 게시글 수정 -->
     <update id="updatePost" parameterType="PostDto">
         UPDATE Post
@@ -117,4 +104,24 @@
         GROUP BY p.post_id
         HAVING COUNT(c.comment_id) &lt;= 1;
     </select>
+    <!-- 조건에 맞는 전체 게시글 수 계산 -->
+    <select id="countPostsByConditions" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM Post p
+        JOIN User u ON p.user_id = u.user_id
+        WHERE 1=1
+        <if test="title != null and title != ''">
+            AND p.title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            AND p.content LIKE CONCAT('%', #{content}, '%')
+        </if>
+        <if test="category != null and category != ''">
+            AND p.category = #{category}
+        </if>
+        <if test="nickname != null and nickname != ''">
+            AND u.nickname = #{nickname}
+        </if>
+    </select>
+
 </mapper>

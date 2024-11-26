@@ -13,6 +13,7 @@ public interface UserService {
     //회원 정보 열람
     UserDto readUser(int id);
     UserDto readUserByNickname(String nickname);
+    UserDto readUserByEmail(String email);
 
     //회원 정보 수정
     int editUser(UserDto user);
@@ -25,4 +26,5 @@ public interface UserService {
 
     //회원 탈퇴
     int removeUser(int id);
+
 }

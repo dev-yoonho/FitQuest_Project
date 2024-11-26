@@ -7,6 +7,7 @@ import com.dualforce.fitquest.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,6 +43,20 @@ public class UserController {
                     .body(null);
         }
     }
+
+    // 이메일 기반 사용자 조회
+    @GetMapping("/email/{email}")
+    @PreAuthorize("isAuthenticated() and #email == authentication.principal.username")
+    @Operation(summary = "사용자 조회(이메일)", description = "기존 사용자를 이메일로 조회합니다.")
+    public ResponseEntity<UserDto> readUserByEmail(@PathVariable String email) {
+        try {
+            UserDto user = userService.readUserByEmail(email);
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 
     // 사용자 조회 (닉네임 기준)
     @GetMapping("/nickname/{nickname}")

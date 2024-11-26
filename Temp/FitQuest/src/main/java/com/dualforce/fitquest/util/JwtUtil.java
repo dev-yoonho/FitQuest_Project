@@ -37,13 +37,16 @@ public class JwtUtil {
     }
 
     public static Claims validateToken(String token) {
-        if (JwtBlacklist.isBlacklisted(token)) {
-            throw new IllegalArgumentException("Token is blacklisted");
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody();
+            System.out.println("Token validated. Claims: " + claims);
+            return claims;
+        } catch (Exception e) {
+            System.err.println("Token validation failed: " + e.getMessage());
+            throw new IllegalArgumentException("Invalid token");
         }
-
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody();
     }
 }

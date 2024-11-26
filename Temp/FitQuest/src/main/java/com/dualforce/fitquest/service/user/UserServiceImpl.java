@@ -57,6 +57,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto readUserByEmail(String email) {
+        UserDto user = userDao.selectUserByEmail(email);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found with Nickname: " + email);
+        }
+        return user;
+    }
+
+    @Override
     public int editUser(UserDto user) {
         userDao.updateUser(user);
         return user.getUserId();

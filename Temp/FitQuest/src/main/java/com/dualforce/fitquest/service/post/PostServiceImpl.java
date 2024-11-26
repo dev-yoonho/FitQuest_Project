@@ -80,4 +80,9 @@ public class PostServiceImpl implements PostService {
         }
         postDao.incrementLikes(postid);
     }
+
+    @Override
+    public int countTotalPosts(String title, String content, String category, String nickname) {
+        return postDao.countPostsByConditions(title, content, category, nickname);
+    }
 }

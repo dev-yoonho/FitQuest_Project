@@ -33,4 +33,6 @@ public interface PostDao {
     // 조건을 만족하는 게시글 검색
     List<Integer> selectEligiblePosts();
 
+    // 조건에 맞는 전체 게시글 수 계산
+    int countPostsByConditions(String title, String content, String category, String nickname);
 }

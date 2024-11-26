@@ -16,3 +16,10 @@ export default defineConfig({
     },
   },
 })
+
+// export default {
+//   optimizeDeps: {
+//     include: ['jwt-decode'],
+//   },
+// };
+

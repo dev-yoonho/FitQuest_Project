@@ -6,6 +6,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -19,16 +21,14 @@ public class AuthController {
     // 로그인
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "사용자의 이메일과 비밀번호를 사용하여 인증 토큰(JWT)을 생성합니다.")
-    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            String token = authService.login(email, password);
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization", "Bearer " + token);
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body("Login successful. Your token: " + token);
+            String token = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
+
+            // JSON 형식으로 응답
+            return ResponseEntity.ok(Map.of("token", token));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(401).body("Unauthorized: " + e.getMessage()); // 401 Unauthorized
+            return ResponseEntity.status(401).body(Map.of("error", "Unauthorized", "message", e.getMessage()));
         }
     }
 
@@ -44,5 +44,26 @@ public class AuthController {
             return ResponseEntity.status(400).body("Failed to log out: " + e.getMessage()); // 400 Bad Request
         }
     }
-}
 
+    // DTO 클래스: LoginRequest
+    public static class LoginRequest {
+        private String email;
+        private String password;
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
+}
