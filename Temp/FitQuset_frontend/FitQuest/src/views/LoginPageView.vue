@@ -83,9 +83,13 @@ const handleLogin = async () => {
 
     const token = response.data.token; // 토큰 추출
     if (token) {
+      sessionStorage.setItem('authToken', token);
       // Pinia store를 통해 사용자 로그인 처리
       await userStore.login(token);
-      router.push('/'); // 로그인 성공 시 메인 페이지로 이동
+      // 메인 페이지로 이동 후 강제 새로고침
+      router.push({ name: 'main' }).then(() => {
+        router.go(0); // 새로고침 강제
+      });
     } else {
       throw new Error('응답에 토큰이 포함되지 않았습니다.');
     }

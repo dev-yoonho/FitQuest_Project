@@ -10,6 +10,8 @@
         <li><RouterLink :to="{ name: 'community' }">커뮤니티</RouterLink></li>
         <li><RouterLink :to="{ name: 'record' }">기록하기</RouterLink></li>
         <li @click="navigateToMyPage">마이페이지</li>
+        <li v-if="isLoggedIn" @click="logout">로그아웃</li>
+        <li v-else @click="goToLogin">로그인/회원가입</li>
       </ul>
     </nav>
   </header>
@@ -23,19 +25,36 @@ import { useRouter } from 'vue-router';
 const userStore = useUserStore();
 const router = useRouter();
 
-const isAuthenticated = computed(() => userStore.isAuthenticated);
+// 로그인 상태 확인
+const isLoggedIn = computed(() => {
+  const token = sessionStorage.getItem('authToken');
+  return !!token && !!userStore.user;
+});
 
 // 마이페이지로 이동
 const navigateToMyPage = () => {
-  if (isAuthenticated.value) {
-    router.push({ name: 'mypage-home' }); // 로그인 상태이면 마이페이지 이동
+  if (isLoggedIn.value) {
+    router.push({ name: 'mypage-home' });
   } else {
-    router.push({ name: 'login' }); // 비로그인 상태이면 로그인 페이지 이동
+    router.push({ name: 'login' });
   }
 };
+
+// 로그아웃 처리
+const logout = async () => {
+  try {
+    await userStore.logout(); // Pinia 상태 초기화
+    router.push({ name: 'main' }); // 메인 페이지로 이동
+  } catch (error) {
+    console.error('로그아웃 실패:', error);
+  }
+};
+
+// 로그인/회원가입 페이지로 이동
+const goToLogin = () => {
+  router.push({ name: 'login' });
+};
 </script>
-
-
 
 <style scoped>
 .header {

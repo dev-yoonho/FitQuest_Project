@@ -4,34 +4,37 @@ import apiClient from '@/api/axios';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: null, // 사용자 정보 저장
+    user: null,
+    token: sessionStorage.getItem('authToken') || null, // 세션 스토리지에서 초기화
   }),
 
   getters: {
-    isAuthenticated: () => !!sessionStorage.getItem('authToken'), // 로그인 상태 동기화
+    isAuthenticated: (state) => !!state.token, // 로그인 상태 확인
   },
 
   actions: {
     async login(token) {
       try {
-        sessionStorage.setItem('authToken', token); // 토큰 저장
-        const decodedToken = this.decodeJwt(token); // JWT 디코딩
+        this.token = token;
+        sessionStorage.setItem('authToken', token);
+
+        const decodedToken = this.decodeJwt(token);
         const userEmail = decodedToken.sub;
 
-        // 사용자 정보 가져오기
         const response = await apiClient.get(`/users/email/${userEmail}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        this.user = response.data; // 사용자 정보 저장
+        this.user = response.data;
       } catch (error) {
         console.error('로그인 실패:', error);
-        this.logout(); // 실패 시 로그아웃
+        this.logout();
       }
     },
 
     logout() {
-      sessionStorage.removeItem('authToken'); // 세션 스토리지에서 토큰 제거
+      this.token = null;
+      sessionStorage.removeItem('authToken');
       this.user = null;
     },
 
